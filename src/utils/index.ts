@@ -29,7 +29,7 @@ export const fetchMarketData = async () => {
     console.time('fetching market data');
     const markets: CoinMarket[] = await api.getMarkets({
       vs_currency: 'usd',
-      per_page: 250,
+      per_page: 25,
       price_change_percentage: ['1h', '24h', '7d', '30d'],
     });
 
