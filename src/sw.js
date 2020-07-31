@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-undef
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+const URL_REGEX = new RegExp('^https://api.coingecko.com/api/v3');
 // eslint-disable-next-line no-undef
 workbox.core.skipWaiting();
 // eslint-disable-next-line no-undef
@@ -7,7 +8,7 @@ workbox.core.clientsClaim();
 
 // eslint-disable-next-line no-undef
 workbox.routing.registerRoute(
-  new RegExp('^https://api.coingecko.com/api/v3'),
+  ({ event, request, url }) => URL_REGEX.test(url.href) && request.method === 'GET',
   // eslint-disable-next-line no-undef
   new workbox.strategies.CacheFirst({
     networkTimeoutSeconds: 3,

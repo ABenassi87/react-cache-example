@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import log from 'loglevel';
-import { Coin, CoinMarket, MarketOptions, Prices } from '../model';
+import * as ApiModel from '../model';
 import * as utils from '../utils';
 
 // Add a request interceptor
@@ -13,7 +13,7 @@ axios.interceptors.request.use(
   function (error) {
     // Do something with request error
     return Promise.reject(error);
-  },
+  }
 );
 
 // Add a response interceptor
@@ -29,23 +29,23 @@ axios.interceptors.response.use(
     // Do something with response error
     log.error('Response Error:', error);
     return Promise.reject(error);
-  },
+  }
 );
 
 const axiosInstance = axios.create({
   baseURL: 'https://api.coingecko.com/api/v3',
 });
 
-export async function getCoins(): Promise<Coin[]> {
+export async function getCoins(): Promise<ApiModel.Coin[]> {
   try {
-    const coinsResponse: AxiosResponse<Coin[]> = await axiosInstance.get<Coin[]>('/coins/list');
+    const coinsResponse: AxiosResponse<ApiModel.Coin[]> = await axiosInstance.get<ApiModel.Coin[]>('/coins/list');
     return coinsResponse.data;
   } catch (err) {
     throw err;
   }
 }
 
-export async function getMarkets(options: MarketOptions): Promise<CoinMarket[]> {
+export async function getMarkets(options: ApiModel.MarketOptions): Promise<ApiModel.CoinMarket[]> {
   try {
     const { vs_currency, ids, order, page, per_page, price_change_percentage, sparkline } = options;
     if (!vs_currency) {
@@ -74,8 +74,91 @@ export async function getMarkets(options: MarketOptions): Promise<CoinMarket[]> 
 
     params = utils.removeUndefinedValues(params);
 
-    const coinMarketsResponse: AxiosResponse<CoinMarket[]> = await axiosInstance.get<CoinMarket[]>('/coins/markets', { params });
+    const coinMarketsResponse: AxiosResponse<ApiModel.CoinMarket[]> = await axiosInstance.get<ApiModel.CoinMarket[]>('/coins/markets', {
+      params,
+    });
     return coinMarketsResponse.data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getCoinDetails(id: string, options: ApiModel.CoinOptions): Promise<ApiModel.CoinDetails> {
+  try {
+    const { location, community_data, developer_data, market_data, tickers, sparkline } = options;
+
+    let params: any = {
+      location,
+      community_data,
+      developer_data,
+      market_data,
+      tickers,
+      sparkline,
+    };
+
+    params = utils.removeUndefinedValues(params);
+
+    const coinDetailsResponse: AxiosResponse<ApiModel.CoinDetails> = await axiosInstance.get<ApiModel.CoinDetails>(`/coins/${id}`, {
+      params,
+    });
+    return coinDetailsResponse.data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getCoinMarketChart(id: string, options: ApiModel.CoinMarketChartOptions): Promise<ApiModel.CoinMarket> {
+  try {
+    let params: any = {
+      ...options,
+    };
+
+    params = utils.removeUndefinedValues(params);
+
+    const coinDetailsResponse: AxiosResponse<ApiModel.CoinMarket> = await axiosInstance.get<ApiModel.CoinMarket>(
+      `/coins/${id}/market_chart`,
+      {
+        params,
+      }
+    );
+    return coinDetailsResponse.data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getCoinMarketChartRange(id: string, options: ApiModel.CoinMarketChartRangeOptions): Promise<ApiModel.CoinMarketChart> {
+  try {
+    let params: any = {
+      ...options,
+    };
+
+    params = utils.removeUndefinedValues(params);
+
+    const coinDetailsResponse: AxiosResponse<ApiModel.CoinMarketChart> = await axiosInstance.get<ApiModel.CoinMarketChart>(
+      `/coins/${id}/market_chart/range`,
+      {
+        params,
+      }
+    );
+    return coinDetailsResponse.data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getCoinHistory(id: string, options: ApiModel.CoinHistoryOptions): Promise<ApiModel.CoinHistory> {
+  try {
+    let params: any = {
+      ...options,
+    };
+
+    params = utils.removeUndefinedValues(params);
+
+    const coinDetailsResponse: AxiosResponse<ApiModel.CoinHistory> = await axiosInstance.get<ApiModel.CoinHistory>(`/coins/${id}/history`, {
+      params,
+    });
+    return coinDetailsResponse.data;
   } catch (err) {
     throw err;
   }
@@ -90,12 +173,12 @@ export async function getSupportedCurrencies(): Promise<string[]> {
   }
 }
 
-export async function getPrices(coinIds: string | string[], currencyIds: string | string[]): Promise<Prices> {
+export async function getPrices(coinIds: string | string[], currencyIds: string | string[]): Promise<ApiModel.Prices> {
   try {
     const ids: string = Array.isArray(coinIds) ? coinIds.join(',') : coinIds;
     const vs_currencies: string = Array.isArray(currencyIds) ? currencyIds.join(',') : currencyIds;
     const params = { ids, vs_currencies };
-    const currenciesResponse: AxiosResponse<Prices> = await axiosInstance.get<Prices>('/simple/price', { params });
+    const currenciesResponse: AxiosResponse<ApiModel.Prices> = await axiosInstance.get<ApiModel.Prices>('/simple/price', { params });
     return currenciesResponse.data;
   } catch (err) {
     throw err;

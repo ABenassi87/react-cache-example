@@ -5,7 +5,7 @@ import NavBar from '../Navbar/NavBar';
 const menu: MenuItem[] = [
   {
     label: 'Dashboard',
-    link: '#',
+    link: '/',
   },
 ];
 

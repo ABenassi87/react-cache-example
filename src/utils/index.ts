@@ -1,4 +1,4 @@
-import { CoinMarket, MapOf } from '../model';
+import { CoinDetails, CoinHistory, CoinMarket, CoinMarketChart, MapOf } from '../model';
 import * as api from '../api';
 
 export function getMapOf<T>(array: T[], key: keyof T): MapOf<T> {
@@ -39,6 +39,81 @@ export const fetchMarketData = async () => {
   } catch (error) {
     console.error('fetching Market Data Error');
     console.timeEnd('fetching market data');
+    throw error;
+  }
+};
+
+export const fetchCoinDetails = async (coinId: string) => {
+  try {
+    console.log('fetching Coin Details');
+    console.time('fetching coin details');
+    const coinDetails: CoinDetails = await api.getCoinDetails(coinId, {
+      location: false,
+    });
+
+    console.log('fetching Coin Details');
+    console.timeEnd('fetching coin details');
+    return coinDetails;
+  } catch (error) {
+    console.error('fetching Coin Details');
+    console.timeEnd('fetching coin details');
+    throw error;
+  }
+};
+
+export const fetchCoinHistory = async (coinId: string, date: string) => {
+  try {
+    console.log('fetchCoinHistory');
+    console.time('fetchCoinHistory');
+    const coinDetails: CoinHistory = await api.getCoinHistory(coinId, {
+      date,
+    });
+
+    console.log('fetchCoinHistory');
+    console.timeEnd('fetchCoinHistory');
+    return coinDetails;
+  } catch (error) {
+    console.error('fetchCoinHistory');
+    console.timeEnd('fetchCoinHistory');
+    throw error;
+  }
+};
+
+export const fetchCoinMarketChart = async (coinId: string) => {
+  try {
+    console.log('fetchCoinMarketChart');
+    console.time('fetchCoinMarketChart');
+    const coinMarket: CoinMarket = await api.getCoinMarketChart(coinId, {
+      vs_currency: 'usd',
+      days: 'max',
+    });
+
+    console.log('fetchCoinMarketChart');
+    console.timeEnd('fetchCoinMarketChart');
+    return coinMarket;
+  } catch (error) {
+    console.error('fetchCoinMarketChart');
+    console.timeEnd('fetchCoinMarketChart');
+    throw error;
+  }
+};
+
+export const fetchCoinMarketChartRange = async (coinId: string, from: number, to: number) => {
+  try {
+    console.log('fetchCoinMarketChartRange');
+    console.time('fetchCoinMarketChartRange');
+    const coinDetails: CoinMarketChart = await api.getCoinMarketChartRange(coinId, {
+      vs_currency: 'usd',
+      from,
+      to,
+    });
+
+    console.log('fetchCoinMarketChartRange');
+    console.timeEnd('fetchCoinMarketChartRange');
+    return coinDetails;
+  } catch (error) {
+    console.error('fetchCoinMarketChartRange');
+    console.timeEnd('fetchCoinMarketChartRange');
     throw error;
   }
 };

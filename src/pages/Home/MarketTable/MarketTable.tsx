@@ -1,5 +1,6 @@
 import React from 'react';
-import {CoinMarket} from '../../../model';
+import { CoinMarket } from '../../../model';
+import { Link } from '@reach/router';
 
 interface MarketTableProps {
   coins: CoinMarket[];
@@ -32,7 +33,9 @@ const MarketTable: React.FunctionComponent<MarketTableProps> = (props: MarketTab
               return (
                 <tr key={index}>
                   <td>
-                    <img className='float-left' alt={coin.name} src={coin.image} width={24} /> {coin.name}
+                    <Link to={`crypto/${coin.id}`}>
+                      <img className='float-left' alt={coin.name} src={coin.image} width={24} /> {coin.name}
+                    </Link>
                   </td>
                   <td className='px-4 py-2'>{coin.symbol}</td>
                   <td className='px-4 py-2'>
