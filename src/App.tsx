@@ -1,10 +1,10 @@
 import React from 'react';
 import './assets/main.css';
-import Dashboard from './components/Dashboard/Dashboard';
+import Dashboard from './components/Dashboard';
 
 const App: React.FunctionComponent = () => {
   return (
-    <div className='App'>
+    <div className='App h-screen'>
       <Dashboard />
     </div>
   );

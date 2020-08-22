@@ -11,16 +11,21 @@ interface Props {
 const ChangesIndicator: React.FunctionComponent<Props> = (props) => {
   const { indicators } = props;
   return (
-    <section className='text-gray-700 body-font'>
+    <section className='text-gray-700 body-font my-2'>
       <div className='container px-5 mx-auto'>
         <div className='flex flex-wrap -m-4 text-center'>
           {indicators.map((indicator, index) => {
             return (
               <div className='p-4 sm:w-1/6 w-1/2' key={index}>
-                <h2 className='title-font font-medium sm:text-4xl text-3xl text-gray-900'>
-                  {indicator.value ? `${new Intl.NumberFormat('en', { style: 'decimal' }).format(indicator.value)}%` : '-'}
-                </h2>
-                <p className='leading-relaxed'>{indicator.label}</p>
+                <h4
+                  className={`title-font text-2xl${
+                    indicator.value > 0 ? ' text-green-600' : indicator.value < 0 ? ' text-red-600' : ' text-gray-900'
+                  }`}>
+                  {indicator.value
+                    ? `${new Intl.NumberFormat('en', { style: 'decimal', maximumFractionDigits: 2 }).format(indicator.value)}%`
+                    : '-'}
+                </h4>
+                <p className='leading-relaxed font-medium text-gray-900'>{indicator.label}</p>
               </div>
             );
           })}

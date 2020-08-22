@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import Chart from '../Chart';
+import DatePicker from '../../../components/DatePicker';
 
 interface Props {
   data: number[][];
@@ -13,7 +14,12 @@ const Historical: React.FunctionComponent<Props> = (props) => {
     dataTemp.push({ name: moment(timestamp).format('MM/DD/yyyy'), price });
     return dataTemp;
   }, []);
-  return <Chart data={chartData} />;
+  return (
+    <section>
+      <DatePicker />
+      <Chart data={chartData} />
+    </section>
+  );
 };
 
 export default Historical;

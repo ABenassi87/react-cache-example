@@ -1,6 +1,6 @@
 import React from 'react';
 import { MenuItem } from '../../model';
-import NavBarItem from "./Navbar-item/NavBarItem";
+import NavBarItem from "./Navbar-item";
 
 interface NavBarProps {
   menuItems: MenuItem[];

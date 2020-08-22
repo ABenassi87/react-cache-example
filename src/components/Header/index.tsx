@@ -1,6 +1,6 @@
 import React from 'react';
 import { MenuItem } from '../../model';
-import NavBar from '../Navbar/NavBar';
+import NavBar from '../Navbar';
 
 const menu: MenuItem[] = [
   {

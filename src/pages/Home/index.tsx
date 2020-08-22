@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { CoinMarket } from '../../model';
 import * as utils from '../../utils';
-import MarketTable from './MarketTable/MarketTable';
+import MarketTable from './MarketTable';
 
 interface Props extends RouteComponentProps {}
 
