@@ -15,7 +15,7 @@ const MarketTable: React.FunctionComponent<MarketTableProps> = (props: MarketTab
         <thead className='bg-gray-50'>
           <tr>
             {tableHeaders.map(({ label, className }) => (
-              <th scope='col' className={className}>
+              <th key={label} scope='col' className={className}>
                 {label}
               </th>
             ))}

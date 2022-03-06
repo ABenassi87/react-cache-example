@@ -6,14 +6,20 @@ import ChangesIndicator, { Indicator } from './ChangesIndicator';
 import dayjs from 'dayjs';
 import Historical from './Historical';
 import Tabs, { Tab } from '../../components/Tabs';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCoinDetails, selectCoinDetails } from '../../store/features/coins';
+import { AppDispatch, RootState } from '../../store';
 
 type ViewDetailsTab = 'description' | 'historical';
 
 const ViewDetails: React.FC = (props) => {
   const { cryptoId } = useParams();
-  const [coin, setCoin] = useState<CoinDetails>();
+
+  const coin = useSelector((state: RootState) => selectCoinDetails(state, cryptoId ?? ''));
+  const dispatch = useDispatch<AppDispatch>();
+
+  // const [coin, setCoin] = useState<CoinDetails>();
   const [indicators, setIndicators] = useState<Indicator[]>([]);
-  const [coinMarketChart, setCoinMarketChart] = useState<CoinMarketChart>();
   const [activeTab, setActiveTab] = useState<string>('description');
   const [loading, setLoading] = useState<boolean>(false);
   const [responseTime, setResponseTime] = useState<number>(-1);
@@ -35,17 +41,10 @@ const ViewDetails: React.FC = (props) => {
     setResponseTime(0);
     try {
       if (cryptoId) {
-        const coinDetails: CoinDetails = await utils.fetchCoinDetails(cryptoId);
-        setCoin(coinDetails);
         const to = dayjs().unix();
         const from = dayjs().add(-1, 'year').unix();
-        const coinMarketChart = await utils.fetchCoinMarketChartRange(cryptoId, from, to);
-        setCoinMarketChart(coinMarketChart);
-        console.log('coin details', coinDetails);
-        console.log('coin Markets', coinMarketChart);
+        dispatch(fetchCoinDetails({ coinId: cryptoId, from, to }));
       } else {
-        setCoin(undefined);
-        setCoinMarketChart(undefined);
       }
     } catch (error) {
       console.error('Error', error);
@@ -109,7 +108,7 @@ const ViewDetails: React.FC = (props) => {
         {!!coin?.description?.en && activeTab === 'description' && (
           <p className='mt-2 text-gray-600' dangerouslySetInnerHTML={{ __html: coin.description.en }} />
         )}
-        {!!coinMarketChart && activeTab === 'historical' && <Historical data={coinMarketChart?.prices} />}
+        {!!coin?.prices && activeTab === 'historical' && <Historical data={coin.prices} />}
       </div>
     </section>
   ) : (

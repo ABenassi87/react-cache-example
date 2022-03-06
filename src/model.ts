@@ -117,6 +117,8 @@ export interface CoinDetails extends Coin {
   tickers?: Ticker[];
 }
 
+export type CoinDetailsState = CoinDetails & CoinMarketChart;
+
 interface Ticker {
   base: string;
   target: string;

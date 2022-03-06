@@ -9,8 +9,8 @@ export function getMapOf<T>(array: T[], key: keyof T): MapOf<T> {
   }, {});
 }
 
-export function getArrayOf<T>(map: MapOf<T>, keyIds: string[]): T[] {
-  return keyIds.map((keyId) => map[keyId]);
+export function getArrayOf<T>(map: MapOf<T>): T[] {
+  return Object.values(map);
 }
 
 export function removeUndefinedValues(obj: any): any {
@@ -29,7 +29,7 @@ export const fetchMarketData = async () => {
     console.time('fetching market data');
     const markets: CoinMarket[] = await api.getMarkets({
       vs_currency: 'usd',
-      per_page: 20,
+      per_page: 500,
       price_change_percentage: ['1h', '24h', '7d', '30d'],
     });
 

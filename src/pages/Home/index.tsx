@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { RouteProps } from 'react-router-dom';
-import { CoinMarket } from '../../model';
-import * as utils from '../../utils';
 import MarketTable from './MarketTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCoinsMarketData, selectCoinsMarket } from '../../store/features/coins';
+import { AppDispatch } from '../../store';
 
 interface Props extends RouteProps {}
 
 const Home: React.FunctionComponent<Props> = () => {
-  const [markets, setMarkets] = useState<CoinMarket[]>([]);
+  // const [markets, setMarkets] = useState<CoinMarket[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const markets = useSelector(selectCoinsMarket);
   const [loading, setLoading] = useState<boolean>(false);
   const [responseTime, setResponseTime] = useState<number>(-1);
   const refreshData = async () => {
@@ -15,8 +18,7 @@ const Home: React.FunctionComponent<Props> = () => {
     const startTime = Date.now();
     setResponseTime(0);
     try {
-      const marketsResults = await utils.fetchMarketData();
-      setMarkets(marketsResults);
+      dispatch(fetchCoinsMarketData());
     } catch (error) {
       console.error('Error', error);
     }

@@ -1,6 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { MenuItem } from '../../model';
 import NavBar from '../Navbar';
+
+import { selectUserData } from '../../store/features/user';
 
 const menu: MenuItem[] = [
   {
@@ -10,6 +13,7 @@ const menu: MenuItem[] = [
 ];
 
 const Header: React.FunctionComponent = () => {
+  const { username, avatar } = useSelector(selectUserData);
   return (
     <header className='DashboardContainer-header'>
       <div className='bg-blue-900'>
@@ -23,14 +27,10 @@ const Header: React.FunctionComponent = () => {
             <div className='w-1/2 md:w-auto text-center text-white text-2xl font-medium'>Crypto Dashboard</div>
             <div className='w-1/4 md:w-auto md:flex text-right'>
               <div>
-                <img
-                  className='inline-block h-8 w-8 rounded-full'
-                  src='https://avatars0.githubusercontent.com/u/4323180?s=460&v=4'
-                  alt=''
-                />
+                <img className='inline-block h-8 w-8 rounded-full' src={avatar} alt='Avatar' />
               </div>
               <div className='hidden md:block md:flex md:items-center ml-2'>
-                <span className='text-white text-sm mr-1'>Admin</span>
+                <span className='text-white text-sm mr-1'>{username}</span>
                 <div>
                   <svg className='fill-current text-white h-4 w-4 block opacity-50' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'>
                     <path d='M4.516 7.548c.436-.446 1.043-.481 1.576 0L10 11.295l3.908-3.747c.533-.481 1.141-.446 1.574 0 .436.445.408 1.197 0 1.615-.406.418-4.695 4.502-4.695 4.502a1.095 1.095 0 0 1-1.576 0S4.924 9.581 4.516 9.163c-.409-.418-.436-1.17 0-1.615z' />
