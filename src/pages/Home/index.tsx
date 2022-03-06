@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { RouteProps } from 'react-router-dom';
-import MarketTable from './MarketTable';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCoinsMarketData, selectCoinsMarket } from '../../store/features/coins';
-import { AppDispatch } from '../../store';
+import React, { useCallback, useEffect, useState } from "react";
+import { RouteProps } from "react-router-dom";
+import MarketTable from "./MarketTable";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCoinsMarketData, selectCoinsMarketFiltered } from "../../store/features/coins";
+import { AppDispatch } from "../../store";
 
 interface Props extends RouteProps {}
 
 const Home: React.FunctionComponent<Props> = () => {
-  // const [markets, setMarkets] = useState<CoinMarket[]>([]);
   const dispatch = useDispatch<AppDispatch>();
-  const markets = useSelector(selectCoinsMarket);
+  const markets = useSelector(selectCoinsMarketFiltered);
   const [loading, setLoading] = useState<boolean>(false);
   const [responseTime, setResponseTime] = useState<number>(-1);
-  const refreshData = async () => {
+  const refreshData = useCallback(async () => {
     setLoading(true);
     const startTime = Date.now();
     setResponseTime(0);
@@ -25,13 +24,14 @@ const Home: React.FunctionComponent<Props> = () => {
 
     setResponseTime(Date.now() - startTime);
     setLoading(false);
-  };
+  }, []);
+
   useEffect(() => {
     refreshData();
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <div className='mx-auto px-4 mt-2'>
         <div className='flex flex-wrap'>
           <button className='btn' disabled={loading} onClick={refreshData}>
@@ -46,7 +46,7 @@ const Home: React.FunctionComponent<Props> = () => {
           </div>
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

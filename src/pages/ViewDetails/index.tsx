@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { CoinDetails, CoinMarketChart } from '../../model';
-import * as utils from '../../utils';
 import ChangesIndicator, { Indicator } from './ChangesIndicator';
 import dayjs from 'dayjs';
 import Historical from './Historical';
@@ -10,19 +8,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCoinDetails, selectCoinDetails } from '../../store/features/coins';
 import { AppDispatch, RootState } from '../../store';
 
-type ViewDetailsTab = 'description' | 'historical';
-
-const ViewDetails: React.FC = (props) => {
+const ViewDetails: React.FC = () => {
   const { cryptoId } = useParams();
 
-  const coin = useSelector((state: RootState) => selectCoinDetails(state, cryptoId ?? ''));
+  const coin = useSelector((state: RootState) => selectCoinDetails(state, cryptoId));
   const dispatch = useDispatch<AppDispatch>();
 
-  // const [coin, setCoin] = useState<CoinDetails>();
   const [indicators, setIndicators] = useState<Indicator[]>([]);
   const [activeTab, setActiveTab] = useState<string>('description');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [responseTime, setResponseTime] = useState<number>(-1);
 
   const tabs: Tab[] = [
     {
@@ -36,9 +29,6 @@ const ViewDetails: React.FC = (props) => {
   ];
 
   const refreshData = useCallback(async () => {
-    setLoading(true);
-    const startTime = Date.now();
-    setResponseTime(0);
     try {
       if (cryptoId) {
         const to = dayjs().unix();
@@ -49,9 +39,6 @@ const ViewDetails: React.FC = (props) => {
     } catch (error) {
       console.error('Error', error);
     }
-
-    setResponseTime(Date.now() - startTime);
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -87,6 +74,8 @@ const ViewDetails: React.FC = (props) => {
     setActiveTab(tab);
   }, []);
 
+  console.log({ coin });
+
   return !!coin ? (
     <section className='text-gray-700 body-font my-16'>
       <div className='container mx-auto py-4 px-8 bg-white shadow-lg rounded-lg'>
@@ -106,7 +95,7 @@ const ViewDetails: React.FC = (props) => {
         <ChangesIndicator indicators={indicators} />
         <Tabs tabItems={tabs} onTabClick={onTabClick} activeTab={activeTab} />
         {!!coin?.description?.en && activeTab === 'description' && (
-          <p className='mt-2 text-gray-600' dangerouslySetInnerHTML={{ __html: coin.description.en }} />
+          <p className='mt-2 text-gray-800' dangerouslySetInnerHTML={{ __html: coin.description.en }} />
         )}
         {!!coin?.prices && activeTab === 'historical' && <Historical data={coin.prices} />}
       </div>

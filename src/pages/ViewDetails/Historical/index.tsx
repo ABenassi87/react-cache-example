@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo } from 'react';
 import dayjs from 'dayjs';
 import Chart from '../Chart';
 
@@ -11,10 +11,10 @@ const Historical: React.FunctionComponent<Props> = (props) => {
   const chartData: { name: string; price: number }[] = useMemo(() => {
     return data.reduce((dataTemp: any[], d) => {
       const [timestamp, price] = d;
-      dataTemp.push({ name: dayjs(timestamp).format('MM/DD/yyyy'), price });
+      dataTemp.push({ name: dayjs(timestamp).format('MM/DD/YYYY'), price });
       return dataTemp;
     }, []);
-  }, [data])
+  }, [data]);
   return (
     <section>
       <Chart data={chartData} />
