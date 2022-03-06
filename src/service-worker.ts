@@ -90,7 +90,7 @@ registerRoute(
     plugins: [
       new ExpirationPlugin({
         maxEntries: 50,
-        maxAgeSeconds: 5 * 60, // 5 minutes
+        maxAgeSeconds: 60, // 1 minute
         purgeOnQuotaError: true,
       }),
     ],
