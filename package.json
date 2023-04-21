@@ -13,7 +13,7 @@
     "notistack": "^0.9.17",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "typescript": "^3.9.7"
   },
   "scripts": {
@@ -52,7 +52,7 @@
     "postcss-cli": "^7.1.1",
     "prettier": "^2.0.5",
     "react-app-rewired": "^2.1.6",
-    "serve": "^11.3.2",
+    "serve": "^14.2.0",
     "tailwindcss": "^1.5.1",
     "workbox-sw": "^5.1.3",
     "workbox-webpack-plugin": "^5.1.3"
